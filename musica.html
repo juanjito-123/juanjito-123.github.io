@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kris R - Música</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+
+/* Reset y estilos globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    position: relative;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efecto de partículas de fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1511671782779-c97d3d21afc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+    background-size: cover;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* Navbar */
+nav {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+}
+
+nav ul li a {
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+nav ul li a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #d4af37, #ff6b6b, #4ecdc4);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.4s ease-out;
+}
+
+nav ul li a:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+nav ul li a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.7);
+}
+
+/* Secciones */
+section {
+    padding: 8rem 2rem 2rem;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('img/fondo.jpg') no-repeat center center;
+    background-size: cover;
+    opacity: 0.05;
+    z-index: -1;
+}
+
+section h1, section h2 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #d4af37, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: glowText 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowText {
+    from {
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.7), 0 0 30px rgba(255, 107, 107, 0.5);
+    }
+}
+
+section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    color: #e0e0e0;
+    line-height: 1.8;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Tarjetas de música */
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.album-card {
+    background: rgba(20, 20, 20, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    cursor: pointer;
+    transform: perspective(1000px) rotateY(0deg);
+    position: relative;
+    overflow: hidden;
+}
+
+.album-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 107, 107, 0.1));
+    z-index: 1;
+    transition: all 0.4s ease;
+    opacity: 0;
+}
+
+.album-card:hover::before {
+    opacity: 1;
+}
+
+.album-card:hover {
+    transform: perspective(1000px) rotateY(10deg) translateY(-10px);
+    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
+    border-color: #d4af37;
+}
+
+.album-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 3px solid #d4af37;
+    transition: transform 0.4s ease;
+}
+
+.album-card:hover .album-cover {
+    transform: scale(1.05);
+}
+
+.album-info {
+    padding: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.album-info h3 {
+    color: #d4af37;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.album-info p {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.album-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.album-card:nth-child(1) { animation-delay: 0.1s; }
+.album-card:nth-child(2) { animation-delay: 0.2s; }
+.album-card:nth-child(3) { animation-delay: 0.3s; }
+.album-card:nth-child(4) { animation-delay: 0.4s; }
+.album-card:nth-child(5) { animation-delay: 0.5s; } /* Añadido para el nuevo álbum */
+
+/* Reproductor de música */
+.audio-player {
+    display: none;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(30, 30, 30, 0.9);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.audio-player h3 {
+    color: #d4af37;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.audio-player audio {
+    width: 100%;
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+footer p {
+    color: #d4af37;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+/* Formulario */
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    background: rgba(30, 30, 30, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background: rgba(50, 50, 50, 0.8);
+    color: #e0e0e0;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+form input:focus, form textarea:focus {
+    border-color: #d4af37;
+    outline: none;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+form button {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #d4af37, #ff6b6b);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+form button:hover {
+    background: linear-gradient(90deg, #ff6b6b, #d4af37);
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+}
+
+/* Efecto de luz para fotos */
+.img-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transition: transform 0.4s ease;
+}
+
+.img-container:hover {
+    transform: scale(1.05) rotate(5deg);
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.img-container:hover img {
+    transform: scale(1.1);
+}
+
+/* Estilo para el botón de Spotify */
+.spotify-button {
+    display: inline-block;
+    background-color: #1DB954;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.spotify-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(29, 185, 84, 0.7);
+}
+
+/* Estilo para centrar el contenido del nuevo álbum */
+.uves-album-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.new-album-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #1DB954, #d4af37);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 8px rgba(29, 185, 84, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+</style>
+<header>
+    
+    <section>
+    <h1>Discografía</h1>
+        <div class="album-grid">
+            <div class="album-card" onclick="playSong('https://archive.org/download/testmp3testfile/mpthreetest.mp3', 'Una Vez Más')">
+                <img src="static/img/chococono.jpg" alt="Portada de Una Vez Más" class="album-cover">
+                <div class="album-info">
+                    <h3>Chococono</h3>
+                    <p>Kris R</p>
+                    <a href="https://open.spotify.com/intl-es/track/1QOdcBUzfhDM1twaQRNIko?si=3006aca684db4037" class="spotify-button" target="_blank">Escuchar en Spotify</a>
+                </div>
+            </div>
+            <div class="album-card" onclick="playSong('https://archive.org/download/testmp3testfile/mpthreetest.mp3', 'Te Quiero Más')">
+                <img src="static/img/electrolibonbon.jpg" alt="Portada de Te Quiero Más" class="album-cover">
+                <div class="album-info">
+                    <h3>Electrolibonbon</h3>
+                    <p>Kris R</p>
+                    <a href="https://open.spotify.com/intl-es/track/5V0j8PSmBYQsFfXKKmzHRj?si=ab4dedeb4a244db8" class="spotify-button" target="_blank">Escuchar en Spotify</a>
+                </div>
+            </div>
+            <div class="album-card" onclick="playSong('https://archive.org/download/testmp3testfile/mpthreetest.mp3', 'Corazón de Piedra')">
+                <img src="static/img/blanquita.jpg" alt="Portada de Corazón de Piedra" class="album-cover">
+                <div class="album-info">
+                    <h3>Blanquita</h3>
+                    <p>Kris R</p>
+                    <a href="https://open.spotify.com/intl-es/track/7MOeU5nxbbgD90VFdpBFmH?si=6f9a286244414f6e" class="spotify-button" target="_blank">Escuchar en Spotify</a>
+                </div>
+            </div>
+            <div class="album-card" onclick="playSong('https://archive.org/download/testmp3testfile/mpthreetest.mp3', 'Sin Ti')">
+                <img src="static/img/laspiponas.jpg" alt="Portada de Sin Ti" class="album-cover">
+                <div class="album-info">
+                    <h3>Las Piponas </h3>
+                    <p>Kris R, Blessd</p>
+                    <a href="https://open.spotify.com/intl-es/track/281YJmnThveWjsWVic9Ym6?si=b08b7cc23b584e26" class="spotify-button" target="_blank">Escuchar en Spotify</a>
+                </div>
+            </div>
+        </div>
+        </section>
+</header>
+
+<body>
+
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="musica.html">Música</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="contactenos.html">Contáctenos</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h1>¡Escucha ya su nuevo album!</h1>
+        <div class="album-grid"> 
+            <div class="album-card" onclick="playSong('https://archive.org/download/testmp3testfile/mpthreetest.mp3', 'Una Vez Más')">
+                <img src="static/img/uves.png" alt="Portada de Una Vez Más" class="album-cover">
+                <div class="album-info">
+                    <h3>U.V.E.S</h3>
+                    <p>Kris R</p>
+                    <a href="https://open.spotify.com/intl-es/album/4Cq3dLOhKEoRDMekEJF4aY?si=MUXqwhLCQX2ARq53zIGdqA" class="spotify-button" target="_blank">Escuchar en Spotify</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Derechos de autor © 2025 Kris R. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function playSong(songUrl, songTitle) {
+            const player = document.querySelector('.audio-player');
+            const audio = player.querySelector('audio');
+            const title = player.querySelector('h3');
+            
+            title.textContent = songTitle;
+            audio.src = songUrl;
+            player.style.display = 'block';
+            audio.play();
+        }
+    </script>
+</body>
+</html>
